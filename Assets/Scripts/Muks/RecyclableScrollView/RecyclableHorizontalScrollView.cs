@@ -1,3 +1,4 @@
+using Muks.RecyclableScrollView;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,6 +33,7 @@ namespace Muks.RecyclableScrollView
 
             //contentRect의 높이 계산
             _contentVisibleSlotCount = (int)(_scrollRectTransform.rect.width / _itemWidth) * _itemsPerColumn;
+            Debug.Log(contentWidth - _scrollRectTransform.rect.width);
             _contentRect.sizeDelta = new Vector2(contentWidth - _scrollRectTransform.rect.width, _contentRect.sizeDelta.y);
 
             // 슬롯 생성 및 리스트에 추가
@@ -62,12 +64,14 @@ namespace Muks.RecyclableScrollView
         }
 
 
+        /// <summary>ScrollRect 이벤트와 연동하여 슬롯의 위치를 변경하는 함수</summary>
         protected override void OnScroll(Vector2 scrollPosition)
         {
+
             float contentX = _contentRect.anchoredPosition.x;
 
             //현재 인덱스 위치 계산 
-            int firstVisibleRowIndex = Mathf.Max(0, Mathf.FloorToInt(contentX / (_itemWidth + _spacing)));
+            int firstVisibleRowIndex = Mathf.Max(0, Mathf.Abs(Mathf.FloorToInt(contentX / (_itemWidth + _spacing))));
             int firstVisibleIndex = firstVisibleRowIndex * _itemsPerColumn;
 
             // 만약 이전 위치와 현재 위치가 달라졌다면 슬롯 재배치
@@ -75,7 +79,7 @@ namespace Muks.RecyclableScrollView
             {
                 int diffIndex = (_tmpfirstVisibleIndex - firstVisibleIndex) / _itemsPerColumn;
 
-                // 현재 인덱스가 더 크다면 (위로 스크롤 중)
+                // 현재 인덱스가 더 크다면 (왼쪽으로 스크롤 중)
                 if (diffIndex < 0)
                 {
                     int lastVisibleIndex = _tmpfirstVisibleIndex + _contentVisibleSlotCount;
@@ -90,7 +94,7 @@ namespace Muks.RecyclableScrollView
                     }
                 }
 
-                // 이전 인덱스가 더 크다면 (아래로 스크롤 중)
+                // 이전 인덱스가 더 크다면 (오른쪽으로 스크롤 중)
                 else if (diffIndex > 0)
                 {
                     for (int i = 0, cnt = Mathf.Abs(diffIndex) * _itemsPerColumn; i < cnt; i++)
@@ -156,6 +160,7 @@ namespace Muks.RecyclableScrollView
         }
     }
 }
+
 
 
 

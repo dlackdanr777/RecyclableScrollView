@@ -2,12 +2,10 @@ using Muks.RecyclableScrollView;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnabledRecyclableScrollView : RecyclableVerticalScrollView<int>
+public class EnabledRecyclableVerticalScrollView : RecyclableVerticalScrollView<int>
 {
     [SerializeField] private int _slotCount;
 
-
-    // Start is called before the first frame update
     void Start()
     {
         List<int> dataList = new List<int>();
